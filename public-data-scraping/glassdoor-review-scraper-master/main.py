@@ -160,7 +160,8 @@ def scrape(field, review, author):
 
     def scrape_helpful(review):
         try:
-            helpful = review.find_element_by_class_name('helpfulCount')
+            #helpful = review.find_element_by_class_name('count')
+            helpful = review.find_element_by_class_name('voteHelpful').find_element_by_class_name('count').find_element_by_tag_name('span')
             res = helpful[helpful.find('(') + 1: -1]
         except Exception:
             res = 0
@@ -175,32 +176,29 @@ def scrape(field, review, author):
             pass
 
     def scrape_pros(review):
-        try:
-            pros = review.find_element_by_class_name('pros')
-            expand_show_more(pros)
-            res = pros.text.replace('\nShow Less', '')
-        except Exception:
-            res = np.nan
-        return res
+        #try:
+        return review.find_elements_by_class_name('mt-md')[0].find_elements_by_tag_name('p')[1].text
+            #expand_show_more(pros)
+            #res = pros.text.replace('\nShow Less', '')
+        #except Exception:
+        #return np.nan
 
     def scrape_cons(review):
         try:
-            cons = review.find_element_by_class_name('cons')
-            expand_show_more(cons)
-            res = cons.text.replace('\nShow Less', '')
+            return review.find_elements_by_class_name('mt-md')[1].find_elements_by_tag_name('p')[1].text
+            #expand_show_more(pros)
+            #res = pros.text.replace('\nShow Less', '')
         except Exception:
-            res = np.nan
-        return res
+            return np.nan
 
     def scrape_advice(review):
         
-        emp_id = review.find_element_by_xpath('//*[@class="empReview"]/div/div[2]/div[2]/div[3]/div[2]/div[2]/p[2]')
-            #x_path = '''//*[@id="''' + str(emp_id) + '''"]/div/div[2]/div[2]/div[3]/div[2]/div[2]/p[2]'''
-            #advice = review.find_element_by_xpath("x_path")
-            #expand_show_more(advice)
-            #res = advice.text.replace('\nShow Less', '')
-        res = emp_id
-        return res
+        try:
+            return review.find_element_by_class_name('advice').text
+            #expand_show_more(pros)
+            #res = pros.text.replace('\nShow Less', '')
+        except Exception:
+            return np.nan
 
 
     def scrape_overall_rating(review):
